@@ -15,37 +15,17 @@ export function useTempLine(
   useEffect(() => {
     if (!tempLine) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const updateLine = (x: number, y: number) => {
       const box = containerRef.current?.getBoundingClientRect();
       if (!box) return;
       setTempLine((line) =>
-        line
-          ? { ...line, x2: e.clientX - box.left, y2: e.clientY - box.top }
-          : null
+        line ? { ...line, x2: x - box.left, y2: y - box.top } : null
       );
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
-      const t = e.touches[0];
-      const box = containerRef.current?.getBoundingClientRect();
-      if (!box) return;
-      setTempLine((line) =>
-        line
-          ? { ...line, x2: t.clientX - box.left, y2: t.clientY - box.top }
-          : null
-      );
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      e.preventDefault();
-      const t = e.changedTouches[0];
-      const el = document.elementFromPoint(
-        t.clientX,
-        t.clientY
-      ) as HTMLElement | null;
+    const endLine = (x: number, y: number) => {
+      const el = document.elementFromPoint(x, y) as HTMLElement | null;
       const itemEl = el?.closest("[data-id]") as HTMLElement | null;
-
       if (itemEl && selected) {
         const targetId = itemEl.dataset.id!;
         const targetKey = itemEl.dataset.key!;
@@ -56,19 +36,20 @@ export function useTempLine(
           setConnections((prev) => [...prev, { from: selected, to: targetId }]);
         }
       }
-
       setSelected(null);
       setTempLine(null);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("touchend", handleTouchEnd);
+    const handlePointerMove = (e: PointerEvent) =>
+      updateLine(e.clientX, e.clientY);
+    const handlePointerUp = (e: PointerEvent) => endLine(e.clientX, e.clientY);
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
     };
   }, [tempLine, selected, connections]);
 
