@@ -1,36 +1,21 @@
 import React from "react";
-import {
-  saveConnections,
-  restoreConnections,
-  clearConnections,
-} from "../utils/storage";
-import { type Connection } from "../utils/types";
 import styled from "styled-components";
+import { useStorageControls } from "../hooks/useStorageControls";
+import { type Connection } from "../utils/types";
 
 type StorageControlsProps = {
   connections: Connection[];
   setConnections: React.Dispatch<React.SetStateAction<Connection[]>>;
 };
 
-export function StorageControls({
+export const StorageControls: React.FC<StorageControlsProps> = ({
   connections,
   setConnections,
-}: StorageControlsProps) {
-  const handleSave = () => {
-    saveConnections(connections);
-    alert("Сохранено!");
-  };
-
-  const handleRestore = () => {
-    setConnections(restoreConnections());
-    alert("Восстановлено!");
-  };
-
-  const handleClear = () => {
-    clearConnections();
-    setConnections([]);
-    alert("Очищено!");
-  };
+}) => {
+  const { handleSave, handleRestore, handleClear } = useStorageControls(
+    connections,
+    setConnections
+  );
 
   return (
     <Container>
@@ -39,7 +24,7 @@ export function StorageControls({
       <Button onClick={handleClear}>🗑 Очистить</Button>
     </Container>
   );
-}
+};
 
 const Button = styled.button`
   padding: 10px;
