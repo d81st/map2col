@@ -71,7 +71,10 @@ const Button = styled.div<{ $isSel?: boolean; $connected: boolean }>`
   cursor: ${(props) => (props.$connected ? "not-allowed" : "pointer")};
   user-select: none;
   touch-action: manipulation;
-  min-width: 10rem;
+  min-width: 5rem;
+  @media (min-width: 768px) {
+    min-width: 10rem;
+  }
   position: relative;
 `;
 

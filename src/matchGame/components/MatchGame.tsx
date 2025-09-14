@@ -74,17 +74,21 @@ export default function MatchGame() {
 const Container = styled.div`
   position: relative;
   display: flex;
-  gap: 40px;
-  justify-content: center;
+  gap: 2rem;
+  justify-content: space-around;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
   touch-action: none;
+
+  @media (min-width: 768px) {
+    gap: 3rem;
+  }
 `;
 
 const Main = styled.div`
   margin: 0 auto;
-  max-width: 50rem;
+  max-width: 40rem;
   font-family: sans-serif;
   position: relative;
 `;
