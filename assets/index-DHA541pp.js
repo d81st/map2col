@@ -76,7 +76,10 @@ Error generating stack: `+e.message+`
   cursor: ${c=>c.$connected?"not-allowed":"pointer"};
   user-select: none;
   touch-action: manipulation;
-  min-width: 10rem;
+  min-width: 5rem;
+  @media (min-width: 768px) {
+    min-width: 10rem;
+  }
   position: relative;
 `;Gv`
   0% {
@@ -104,15 +107,19 @@ Error generating stack: `+e.message+`
 `;function $v(c,s){const[o,f]=Ft.useState([]),[m,A]=Ft.useState([]),R=H=>o.some(D=>D.from===H||D.to===H);return Ft.useLayoutEffect(()=>{if(!c.current)return;const H=c.current.getBoundingClientRect(),D=o.map(E=>{const U=s.current[E.from],N=s.current[E.to];if(!U||!N)return null;const x=U.getBoundingClientRect(),Y=N.getBoundingClientRect();return{from:E.from,to:E.to,x1:x.right-H.left,y1:x.top+x.height/2-H.top,x2:Y.left-H.left,y2:Y.top+Y.height/2-H.top}}).filter(Boolean);A(D)},[o]),{connections:o,setConnections:f,linePositions:m,isConnected:R}}function kv(c,s,o,f,m){const[A,R]=Ft.useState(null);return Ft.useEffect(()=>{if(!A)return;const H=(N,x)=>{const Y=m.current?.getBoundingClientRect();Y&&R(j=>j?{...j,x2:N-Y.left,y2:x-Y.top}:null)},D=(N,x)=>{const j=document.elementFromPoint(N,x)?.closest("[data-id]");if(j&&c){const k=j.dataset.id,lt=j.dataset.key,ft=o.some(ut=>ut.from===c||ut.to===k);lt==="options"&&!ft&&f(ut=>[...ut,{from:c,to:k}])}s(null),R(null)},E=N=>H(N.clientX,N.clientY),U=N=>D(N.clientX,N.clientY);return window.addEventListener("pointermove",E),window.addEventListener("pointerup",U),()=>{window.removeEventListener("pointermove",E),window.removeEventListener("pointerup",U)}},[A,c,o]),{tempLine:A,setTempLine:R}}function Wv({selected:c,setSelected:s,setTempLine:o,setConnections:f,isConnected:m,containerRef:A,itemRefs:R}){const H=Ft.useRef(!1),D=Ft.useCallback((x,Y,j)=>{if(c===x.id){s(null),o(null);return}if(!c&&x.key==="properties"){s(x.id);const k=R.current[x.id],lt=A.current?.getBoundingClientRect();if(k&&lt){const ft=k.getBoundingClientRect();o({x1:ft.right-lt.left,y1:ft.top+ft.height/2-lt.top,x2:Y-lt.left,y2:j-lt.top})}}else c&&x.key==="options"&&(f(k=>[...k,{from:c,to:x.id}]),s(null),o(null))},[c,s,o,f,A,R]),E=Ft.useCallback(x=>{if(H.current||m(x.id))return;const Y=R.current[x.id],j=A.current?.getBoundingClientRect();if(Y&&j){const k=Y.getBoundingClientRect(),lt=k.right,ft=k.top+k.height/2;D(x,lt,ft)}},[m,A,R,D]),U=Ft.useCallback((x,Y)=>{if(H.current=!0,setTimeout(()=>H.current=!1,300),m(x.id))return;const j=Y.touches[0];D(x,j.clientX,j.clientY)},[m,D]),N=Ft.useCallback(x=>{f(Y=>Y.filter(j=>!(j.from===x.from&&j.to===x.to)))},[f]);return{handleClick:E,handleTouchStart:U,handleRemove:N}}function Fv(){const c=Ft.useRef(null),s=Ft.useRef({}),[o,f]=Ft.useState(null),{connections:m,setConnections:A,linePositions:R,isConnected:H}=$v(c,s),{tempLine:D,setTempLine:E}=kv(o,f,m,A,c),{handleClick:U,handleTouchStart:N,handleRemove:x}=Wv({selected:o,setSelected:f,setTempLine:E,setConnections:A,isConnected:H,containerRef:c,itemRefs:s});return Et.jsxs(Pv,{children:[Et.jsx(wv,{connections:m,setConnections:A}),Et.jsxs(Iv,{ref:c,children:[Et.jsx(x0,{type:"properties",connections:m,selected:o,isConnected:H,itemRefs:s,onClickItem:U,onTouchItem:N}),Et.jsx(x0,{type:"options",connections:m,selected:o,isConnected:H,itemRefs:s,onClickItem:U,onTouchItem:N}),Et.jsx(jv,{linePositions:R,tempLine:D,onRemove:x})]})]})}const Iv=Ue.div`
   position: relative;
   display: flex;
-  gap: 40px;
-  justify-content: center;
+  gap: 2rem;
+  justify-content: space-around;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
   touch-action: none;
+
+  @media (min-width: 768px) {
+    gap: 3rem;
+  }
 `,Pv=Ue.div`
   margin: 0 auto;
-  max-width: 50rem;
+  max-width: 40rem;
   font-family: sans-serif;
   position: relative;
 `;function tm(){return Et.jsx("div",{children:Et.jsx(Fv,{})})}Gy.createRoot(document.getElementById("root")).render(Et.jsx(tm,{}));
