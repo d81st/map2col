@@ -77,18 +77,3 @@ const Button = styled.div<{ $isSel?: boolean; $connected: boolean }>`
   }
   position: relative;
 `;
-
-const pulse = keyframes`
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(0, 150, 255, 0.5);
-  }
-  70% {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px 10px rgba(0, 150, 255, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(0, 150, 255, 0);
-  }
-`;

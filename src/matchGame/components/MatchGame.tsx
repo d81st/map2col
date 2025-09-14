@@ -1,39 +1,26 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import styled from "styled-components";
 
 import { Lines } from "./Lines";
 import { Column } from "./Column";
 import { StorageControls } from "./StorageControls";
-
-import { useConnections } from "../hooks/useConnections";
-import { useTempLine } from "../hooks/useTempLine";
-import { useSelection } from "../hooks/useSelection";
+import { useMatchGameLogic } from "../hooks/useMatchGameLogic";
 
 export default function MatchGame() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [selected, setSelected] = useState<string | null>(null);
 
-  const { connections, setConnections, linePositions, isConnected } =
-    useConnections(containerRef, itemRefs);
-
-  const { tempLine, setTempLine } = useTempLine(
-    selected,
-    setSelected,
+  const {
     connections,
     setConnections,
-    containerRef
-  );
-
-  const { handleClick, handleTouchStart, handleRemove } = useSelection({
+    linePositions,
     selected,
-    setSelected,
-    setTempLine,
-    setConnections,
+    tempLine,
+    handleClick,
+    handleTouchStart,
+    handleRemove,
     isConnected,
-    containerRef,
-    itemRefs,
-  });
+  } = useMatchGameLogic({ containerRef, itemRefs });
 
   return (
     <Main>
@@ -41,7 +28,6 @@ export default function MatchGame() {
         connections={connections}
         setConnections={setConnections}
       />
-
       <Container ref={containerRef}>
         <Column
           type="properties"
